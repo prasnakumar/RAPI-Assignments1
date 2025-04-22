@@ -1,0 +1,66 @@
+Overview:
+HTTP/1.0, introduced in 1996, expanded upon HTTP/0.9 by adding more functionality.
+It supported multiple HTTP methods (like GET, POST, PUT), included headers for additional metadata, and allowed for more flexible communication between clients and servers.
+Despite its improvements, it still had limitations, such as no support for persistent connections and lack of more advanced optimizations.
+
+Request and Response Format:
+* Request: An HTTP/1.0 request includes the method (GET, POST, etc.), the requested resource, the protocol version (HTTP/1.0), and headers.
+* Response: The server response includes a status code, headers, and the content of the requested resource.
+
+
+Key Features of HTTP/1.0:
+
+* Methods: Supported multiple HTTP methods, including GET, POST, PUT, and DELETE.
+
+* Headers: HTTP/1.0 introduced headers, allowing servers and clients to exchange additional information, such as Content-Type, Content-Length, and Host.
+
+* Status Codes: Included HTTP status codes, such as 200 OK and 404 Not Found, to provide more context about the request’s outcome.
+
+* Request Format: Requests contained the method, resource path, protocol version, and headers.
+
+* Response Format: Responses included status codes, headers, and the requested content.
+
+
+Limitations of HTTP/1.0:
+1. No Persistent Connections: Each request required a separate connection, leading to inefficiencies, as a new connection had to be opened for each resource (e.g., for each image or script on a page).
+
+2. No Advanced Caching Mechanisms: HTTP/1.0 provided basic caching with the Cache-Control header, but it didn’t support more advanced features like ETags or conditional requests, which later became important for performance.
+
+3. Limited Performance Optimizations: HTTP/1.0 was still fairly limited in terms of performance optimization for modern websites with multiple assets.
+
+
+C# code 
+using System;
+using System.Net;
+using System.IO;
+
+class HttpRequest
+{
+    static void Main()
+    {
+        // Create an HTTP request for a page using HTTP/1.0
+        string url = "http://example.com/my-page.html";
+        
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        request.Method = "GET"; // You can also use POST, PUT, etc. in HTTP/1.0
+        request.ProtocolVersion = HttpVersion.Version10; // Specify HTTP/1.0
+
+        // Add headers
+        request.Headers.Add("Host", "example.com");
+
+        // Send the request and get the response
+        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        
+        // Read the response content
+        StreamReader reader = new StreamReader(response.GetResponseStream());
+        string responseText = reader.ReadToEnd();
+
+        // Display the content
+        Console.WriteLine("Response from server:");
+        Console.WriteLine(responseText);
+
+        // Close the response and reader
+        reader.Close();
+        response.Close();
+    }
+}
