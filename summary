@@ -1,0 +1,11 @@
+Key summary difference 
+
+Feature | HTTP/0.9 | HTTP/1.1 | HTTP/2.0 | HTTP/3.0
+Year Introduced | 1991 | 1997 | 2015 | 2022 (standardized)
+Transport Protocol | TCP | TCP | TCP | QUIC (over UDP)
+Request Methods | Only GET | GET, POST, PUT, etc. | Same as 1.1 | Same as 2.0
+Persistent Connections | ❌ | ✅ | ✅ | ✅
+Multiplexing | ❌ | ❌ (head-of-line blocking) | ✅ (streams) | ✅ (streams, no TCP HOL blocking)
+Header Compression | ❌ | ❌ | ✅ (HPACK) | ✅ (QPACK)
+Binary Protocol | ❌ (text only) | ❌ (text only) | ✅ | ✅
+Server Push | ❌ | ❌ | ✅ | ✅
