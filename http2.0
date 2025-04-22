@@ -1,0 +1,65 @@
+Overview:
+HTTP/2, finalized in 2015, is a major revision of the HTTP protocol designed to improve the performance and efficiency of web communication. 
+It introduces features such as multiplexing, header compression, and prioritization, addressing the performance bottlenecks that HTTP/1.x struggled with. 
+HTTP/2 is widely supported across modern browsers and servers and significantly improves the user experience by reducing page load times.
+
+Key Features of HTTP/2:
+
+* Multiplexing: Unlike HTTP/1.x, HTTP/2 allows multiple requests and responses to be sent in parallel over a single connection. This reduces the overhead of establishing multiple connections and eliminates head-of-line blocking, improving overall performance.
+
+* Header Compression: HTTP/2 uses the HPACK compression format to reduce the size of HTTP headers, which decreases the amount of data that needs to be transferred between the client and the server. This is particularly beneficial when dealing with large or repetitive headers.
+
+* Server Push: HTTP/2 allows the server to push resources (like images, scripts, or stylesheets) to the client before the client explicitly requests them. This can reduce page load times, especially for resources that are likely to be needed by the client.
+
+Limitations of HTTP/2:
+
+Increased Complexity: The binary protocol and multiplexing require more complex implementation compared to HTTP/1.x, which could potentially lead to compatibility issues in certain environments.
+
+Server Push Limitations: Although server push can improve performance, it can also lead to wasted resources if not used effectively. Pushing resources that the client doesn’t need can actually slow down page loading.
+
+C# 2.0
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class HttpRequest
+{
+    static async Task Main()
+    {
+        // HTTP/2 requires HttpClientHandler that supports HTTP/2
+        var handler = new HttpClientHandler
+        {
+            // Enable HTTP/2
+            AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate
+        };
+
+        using (var client = new HttpClient(handler))
+        {
+            // Set the target URL
+            string url = "http://example.com/my-page.html";
+
+            try
+            {
+                // Send the HTTP/2 GET request
+                var response = await client.GetAsync(url);
+
+                // Check if the response is successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read and display the response content
+                    string content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Response from server:");
+                    Console.WriteLine(content);
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
+        }
+    }
+}
